@@ -8,14 +8,12 @@
    Exemplo: 5511998765432
    -------------------------------------------------------------------------- */
 const WHATSAPP_NUMERO = "34682696591";
-const MENSAGEM_PADRAO = "Oi, Gabi! Quero agendar a consultoria individual.";
-
 const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* --------------------------------------------------------------------------
    LINKS DE PAGAMENTO (Asaas)  ← COLE AQUI os 2 links, entre as aspas
    Exemplo: "https://www.asaas.com/c/abcdefghij"
-   Enquanto estiverem vazios, os botões continuam abrindo o WhatsApp.
+   Os botões "Contratar agora" levam direto para o pagamento do plano.
    Por segurança, só são aceitos endereços do Asaas (www.asaas.com ou
    sandbox.asaas.com, em https). Qualquer outro endereço é ignorado.
    -------------------------------------------------------------------------- */
@@ -31,34 +29,22 @@ function linkPagamento(plano) {
   if (!ENDERECO_ASAAS.test(l)) { console.warn("Link de pagamento inválido para: " + plano); return null; }
   return l;
 }
-var pagamentoAtivo = Object.keys(LINKS_PAGAMENTO).some(function (p) { return !!linkPagamento(p); });
 
-/* Monta o link do WhatsApp de um botão (usa data-plano, se existir) */
-function montarWhatsapp(botao) {
-  var plano = botao.getAttribute("data-plano");
-  var texto = MENSAGEM_PADRAO;
-  if (plano) texto = "Oi, Gabi! Quero agendar a consultoria individual (" + plano + ").";
-  botao.setAttribute("href", "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(texto));
-  botao.setAttribute("target", "_blank");
-  botao.setAttribute("rel", "noopener");
-}
-
-document.querySelectorAll(".js-whatsapp").forEach(function (botao) {
-  var plano = botao.getAttribute("data-plano");
-  /* Botão de um plano: vai direto para o pagamento do plano */
-  if (plano && linkPagamento(plano)) {
-    botao.setAttribute("href", linkPagamento(plano));
-    botao.removeAttribute("target");
+document.querySelectorAll(".js-pagar").forEach(function (botao) {
+  var link = linkPagamento(botao.getAttribute("data-plano"));
+  if (link) {
+    botao.setAttribute("href", link);
     botao.setAttribute("rel", "noopener");
     return;
   }
-  /* Botões gerais (topo, rodapé fixo, final): levam para a escolha do plano */
-  if (!plano && pagamentoAtivo) {
-    botao.setAttribute("href", "#investimento");
-    botao.removeAttribute("target");
-    return;
-  }
-  montarWhatsapp(botao);
+  /* Sem link configurado: fica como prévia (não abre WhatsApp nem leva a lugar nenhum) */
+  botao.setAttribute("href", "#investimento");
+  botao.setAttribute("aria-disabled", "true");
+  botao.classList.add("is-previa");
+  var nota = document.createElement("small");
+  nota.className = "previa-nota";
+  nota.textContent = "Prévia: o link de pagamento será ativado no lançamento.";
+  botao.parentNode.appendChild(nota);
 });
 
 /* Link secundário: tirar dúvida antes de contratar */
