@@ -7,7 +7,7 @@
    Formato: código do país + DDD + número, sem espaços, "+" ou traço.
    Exemplo: 5511998765432
    -------------------------------------------------------------------------- */
-const WHATSAPP_NUMERO = "5599999999999";
+const WHATSAPP_NUMERO = "34682696591";
 const MENSAGEM_PADRAO = "Oi, Gabi! Quero agendar a consultoria individual.";
 
 const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
