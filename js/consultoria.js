@@ -19,7 +19,7 @@ const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").mat
    -------------------------------------------------------------------------- */
 const LINKS_PAGAMENTO = {
   "sessão individual": "https://www.asaas.com/000/c/2n8bm5b3680vwx1v",
-  "pacote com 3 sessões": ""
+  "pacote com 3 sessões": "https://www.asaas.com/000/c/a692wg3af08zsvsk"
 };
 const ENDERECO_ASAAS = /^https:\/\/(www|sandbox)\.asaas\.com\/[A-Za-z0-9_\-\/.?=&%]+$/;
 
